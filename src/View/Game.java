@@ -165,7 +165,7 @@ public class Game extends UnicastRemoteObject implements GameInterface{
         this.movimientoEnemigos = new EnemyMoving(this.naves, this.enemies);
     }
     @Override
-    public void enemyMovingStart() throws java.rmi.RemoteException{
+    public void enemyMovingStart() throws RemoteException{
         this.movimientoEnemigos.start();
     }
     @Override

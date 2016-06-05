@@ -5,21 +5,13 @@
  */
 package View;
 
-import Controller.GestorEnemigos;
-import Controller.GestorNave;
 import Model.Nave;
-import View.DrawingSpace;
-import View.GameInterface;
-import View.WindowGame;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.ImageObserver;
-import java.io.PrintStream;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author USUARIO
  */
-public class DrawingSpace extends Canvas {
+public class DrawingSpace extends Canvas implements Serializable{
     private GameInterface gm;
     private int idPlayer;
     private Image dibujoAux;

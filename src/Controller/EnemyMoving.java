@@ -6,12 +6,10 @@
 package Controller;
 
 import Model.Enemy;
-import View.GameInterface;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
-import java.rmi.RemoteException;
 
 /**
  *

@@ -11,7 +11,6 @@ import Controller.GestorEnemigos;
 import Controller.GestorNave;
 import Model.Nave;
 import java.awt.Point;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
