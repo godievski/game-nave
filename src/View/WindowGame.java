@@ -57,6 +57,7 @@ public class WindowGame extends javax.swing.JFrame {
      * @throws java.rmi.RemoteException
      * @throws java.rmi.NotBoundException
      * @throws java.net.MalformedURLException
+     * @throws java.net.UnknownHostException
      */
     public WindowGame(String ip, String port) throws RemoteException, NotBoundException, MalformedURLException, UnknownHostException {
         this.initComponents();
