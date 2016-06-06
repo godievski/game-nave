@@ -22,12 +22,12 @@ import java.util.logging.Logger;
  */
 public class DrawingSpace extends Canvas implements Serializable{
     private GameInterface gm;
-    private int idPlayer;
+    private final int idPlayer;
     private Image dibujoAux;
     private Graphics gAux;
     private Dimension dimAux;
     private final Dimension dimPanel;
-    private WindowGame wg;
+    private final WindowGame wg;
     
     public DrawingSpace (WindowGame wg, GameInterface gm, int idPlayer, Dimension d){
         this.initComponents();
@@ -98,32 +98,35 @@ public class DrawingSpace extends Canvas implements Serializable{
         gAux.fillRect(0, 0, WindowGame.WINDOW_WIDTH, WindowGame.WINDOW_HEIGHT);
         
         try {
-            if (this.gm != null && this.gm.getNaves() != null) {
-                Nave nave = this.gm.getNaves().get(this.idPlayer);
-                if (nave != null) {
+            if (this.gm != null) {
+                //Nave nave = this.gm.getNaves().get(this.idPlayer);
+                int hp = this.gm.getPlayerHP(this.idPlayer);
+                int score = this.gm.getPlayerScore(this.idPlayer);
+                if (true) {
                     this.gAux.setColor(Color.WHITE);
-                    this.gAux.drawString("SCORE: " + nave.getScore(), 10, 20);
-                    this.gAux.drawString("LIFE: " + nave.getHP(), WindowGame.WINDOW_WIDTH - 50, 20);
+                    this.gAux.drawString("SCORE: " + score, 10, 20);
+                    this.gAux.drawString("LIFE: " + hp, WindowGame.WINDOW_WIDTH - 50, 20);
                 }
-                this.gm.getNaves().dibujar(this.gAux);
+                this.gm.getNaves().dibujar(gAux);
             } else {
                 System.out.println("Naves nulas");
             }
         }
         catch (RemoteException ex) {
             Logger.getLogger(DrawingSpace.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Error de conexion");
+            System.out.println("Error de conexion Naves");
         }
         
         try {
             if (this.gm != null && this.gm.getEnemies() != null) {
                 this.gm.getEnemies().dibujar(this.gAux);
-            } else {
+            } else {    
                 System.out.println("Enemigos nulas");
             }
         }
         catch (RemoteException ex) {
             Logger.getLogger(DrawingSpace.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error de conexion Enemigo");
         }
         g.drawImage(this.dibujoAux, 0, 0, this);
         g.dispose();

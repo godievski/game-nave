@@ -8,21 +8,18 @@ package Model;
 import Controller.BulletMoving;
 import Controller.GestorBalas;
 import Controller.GestorDisparos;
-import Model.Bullet;
-import Model.Sprite;
 import View.WindowGame;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
 import java.awt.Point;
-import java.io.Serializable;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Godievski
  */
-public class Nave extends Sprite implements Serializable{
+public class Nave extends Sprite{
     
     //CONSTANT
     protected static final int WIDTH = 20;

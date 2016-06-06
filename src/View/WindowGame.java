@@ -7,9 +7,6 @@ package View;
 
 
 import Model.Nave;
-import View.DrawingSpace;
-import View.GameInterface;
-import View.WindowGame;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;

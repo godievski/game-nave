@@ -29,8 +29,8 @@ public class Game extends UnicastRemoteObject implements GameInterface{
     private EnemyMoving movimientoEnemigos;
     private Collision controladorColisiones;
     //SPRITES
-    private final GestorNave naves;
-    private final GestorEnemigos enemies;
+    public GestorNave naves;
+    public GestorEnemigos enemies;
     //FLGAS
     private boolean ready;
     
@@ -47,6 +47,15 @@ public class Game extends UnicastRemoteObject implements GameInterface{
     @Override
     public boolean getState() throws RemoteException {
         return this.ready;
+    }
+    
+    @Override
+    public int getPlayerHP(int index) throws RemoteException{
+        return this.naves.get(index).getHP();
+    }
+    @Override
+    public int getPlayerScore(int index) throws RemoteException{
+        return this.naves.get(index).getScore();
     }
     
     @Override

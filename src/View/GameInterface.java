@@ -20,6 +20,9 @@ import java.rmi.RemoteException;
 public interface GameInterface extends java.rmi.Remote{
     public boolean getState() throws RemoteException;
 
+    public int getPlayerHP(int index) throws RemoteException;
+    public int getPlayerScore(int index) throws RemoteException;
+            
     public void initGame(int var1) throws RemoteException;
 
     public void endGame(int var1) throws RemoteException;
