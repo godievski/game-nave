@@ -201,7 +201,7 @@ public class Game extends UnicastRemoteObject implements GameInterface{
         //System.setProperty("java.security.policy", "C:/Temp/CLIENTE1/build/classes/java.policy");
         try {
             Game gm = new Game();
-            Naming.rebind("//localhost/Godie", gm);
+            Naming.rebind("Godie", gm);
             System.out.println("Server created");
             System.out.println(InetAddress.getLocalHost().getHostAddress());
         }catch (RemoteException | MalformedURLException | UnknownHostException ex) {

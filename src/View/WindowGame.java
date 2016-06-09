@@ -68,7 +68,7 @@ public class WindowGame extends javax.swing.JFrame {
         this.setVisible(true);
         this.setTitle("SpaceInvader by Godievski");
         this.setFocusableWindowState(true);
-        this.game = (GameInterface)Naming.lookup("//" + ip + ":" + port +"/Godie");
+        this.game = (GameInterface)Naming.lookup("//localhost/Godie");
         this.nave = this.game.createPlayer();
         this.panelDibujo = new DrawingSpace(this, this.game, this.nave.getID(), new Dimension(400, 600));
         this.panelDibujo.setFocusable(false);
