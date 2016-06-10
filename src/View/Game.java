@@ -73,10 +73,8 @@ public class Game extends UnicastRemoteObject implements GameInterface{
             return;
         }
         this.enemies.clear();
-        for (int i = 0; i < this.naves.size(); ++i) {
-            Nave nave = this.naves.get(i);
-            nave.restartNave();
-        }
+        this.naves.restart();
+        
         if (this.movimientoEnemigos == null) {
             this.newEnemyMoving();
         }

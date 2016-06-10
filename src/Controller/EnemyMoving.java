@@ -52,7 +52,7 @@ public class EnemyMoving extends Thread implements Serializable{
                 for (int i = 0; i < this.enemies.size(); i++){
                     Enemy enemigo = this.enemies.get(i);
                     if (enemigo != null){
-                            enemigo.mover(naves.get(0));
+                            enemigo.mover(naves);
                     }
                         
                 }

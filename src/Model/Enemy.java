@@ -5,8 +5,10 @@
  */
 package Model;
 
+import Controller.GestorNave;
 import View.WindowGame;
 import java.awt.Graphics;
+import java.util.Random;
 
 /**
  *
@@ -20,11 +22,12 @@ public class Enemy extends Sprite {
     private static final int HP = 3;
     private static final int TIPO_RANDOM = 1;
     private static final int TIPO_NORMAL = 0;
-    
+    private static Random random = new Random();
     private final int score;
     private static final int MIN = (Enemy.WIDTH/2 + Nave.WIDTH/2);
     private static final int MAX = (WindowGame.WINDOW_WIDTH - Enemy.WIDTH - Nave.WIDTH/2);
     private int tipo;
+    private int idNave;
     
     public Enemy(){
         super(0, 0,VELOCIDAD, WIDTH, HEIGHT, HP);
@@ -32,17 +35,21 @@ public class Enemy extends Sprite {
         this.hp = hp_temp;
         this.posX = (int)(Math.random() * (Enemy.MIN - Enemy.MAX)  + Enemy.MAX);
         this.score = hp_temp*10;
-        this.tipo = (int)(Math.random()*10000 / 6001);
+        this.tipo = random.nextInt(2);
+        this.idNave = -1;
     }
     
     public int getScore(){
         return this.score;
     }
-    public void mover(Nave nave){
-        if (tipo == TIPO_NORMAL || nave == null)
+    public void mover(GestorNave naves){
+        if (idNave == -1 || naves.get(idNave).getHP()<=0)
+            idNave = naves.getRandomId();
+        
+        if (tipo == TIPO_NORMAL || naves == null)
             this.posY += VELOCIDAD;
         else if (tipo == TIPO_RANDOM)
-            this.specialMove(nave);
+            this.specialMove(naves.get(idNave));
     }
     
     public void setTipo(int tipo){
