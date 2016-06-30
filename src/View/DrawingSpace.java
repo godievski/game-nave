@@ -5,6 +5,9 @@
  */
 package View;
 
+import Controller.IGestorEnemigos;
+import Controller.IGestorNave;
+import Model.Enemy;
 import Model.Nave;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -15,6 +18,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -53,7 +57,7 @@ public class DrawingSpace extends Canvas implements Serializable{
     private void formMousePressed(java.awt.event.MouseEvent evt) {                                  
         // TODO add your handling code here:
         try {
-            Nave nave = this.gm.getNaves().get(this.idPlayer);
+            Nave nave = wg.naves.get(this.idPlayer);
             if (!nave.getSpacePressed() && !nave.getSpecialShoot()) {
                 this.wg.setMousePressed(true);
             }
@@ -99,15 +103,14 @@ public class DrawingSpace extends Canvas implements Serializable{
         
         try {
             if (this.gm != null) {
-                //Nave nave = this.gm.getNaves().get(this.idPlayer);
-                int hp = this.gm.getPlayerHP(this.idPlayer);
-                int score = this.gm.getPlayerScore(this.idPlayer);
-                if (true) {
-                    this.gAux.setColor(Color.WHITE);
-                    this.gAux.drawString("SCORE: " + score, 10, 20);
-                    this.gAux.drawString("LIFE: " + hp, WindowGame.WINDOW_WIDTH - 50, 20);
-                }
-                this.gm.getNaves().dibujar(gAux);
+                Nave nave = this.wg.naves.get(this.idPlayer);
+                int hp = nave.getHP();
+                int score = nave.getScore();
+                this.gAux.setColor(Color.WHITE);
+                this.gAux.drawString("SCORE: " + score, 10, 20);
+                this.gAux.drawString("LIFE: " + hp, WindowGame.WINDOW_WIDTH - 50, 20);
+                
+                dibujarNaves(wg.naves,gAux);
             } else {
                 System.out.println("Naves nulas");
             }
@@ -117,18 +120,35 @@ public class DrawingSpace extends Canvas implements Serializable{
             System.out.println("Error de conexion Naves");
         }
         
-        try {
-            if (this.gm != null && this.gm.getEnemies() != null) {
-                this.gm.getEnemies().dibujar(this.gAux);
-            } else {    
-                System.out.println("Enemigos nulas");
-            }
+        
+        if (wg.enemies != null) {
+            dibujarEnemigos(wg.enemies,gAux);
         }
-        catch (RemoteException ex) {
-            Logger.getLogger(DrawingSpace.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Error de conexion Enemigo");
-        }
+        
         g.drawImage(this.dibujoAux, 0, 0, this);
         g.dispose();
+    }
+    
+    private void dibujarNaves(IGestorNave naves, Graphics g){
+        try {
+            for (int i = 0; i < naves.size(); i++){
+                Nave nave = naves.get(i);
+                if (nave.isAlive())
+                    nave.dibujar(g);
+            }
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null,e.toString());
+        }
+    }
+    private void dibujarEnemigos(IGestorEnemigos enemies, Graphics g){
+        try {
+            g.setColor(Color.BLACK);
+            for (int i = 0; i < enemies.size(); i++){
+                Enemy enemy = enemies.get(i);
+                enemy.dibujar(g);
+            }
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null,e.toString());
+        }
     }
 }

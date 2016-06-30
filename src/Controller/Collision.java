@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import View.WindowGame;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -49,58 +50,24 @@ public class Collision extends Thread implements Serializable{
     public void run(){
         playing = true;
         while(playing){
-            //CHECAR COLISION NAVE - ENEMIGO
-            
-            for(int j = 0; j < listNave.size();j++){
-                Nave nave = listNave.get(j);
-                if (!nave.isAlive()) continue;
-                for(int i = 0; i < listEnemy.size();i++){
-                    try{
-                        Enemy enemy = listEnemy.get(i);
-                        if (enemy.getPosYInt() > (WindowGame.WINDOW_HEIGHT)){
-                            listEnemy.remove(i);
-                            i--;
-                            this.listNave.removeHP();
-                            continue;
-                        }
-                        if (checkCollision(nave,enemy)){
-                            nave.removeHP();
-                            listEnemy.remove(i);
-                            i--;    
-                            if (i < 0) break;
-                        }
-                    } catch (Exception e){
-                        // empty catch block
-                    }
-                }
-            }
-            
-            //CHECAR COLISION BALA - ENEMIGO
-            for(int z = 0; z < listNave.size(); z++){
-                Nave nave = listNave.get(z);
-                if(!nave.isAlive()) continue;
-                GestorBalas listaBalas = nave.getBalas();
-            
-                for(int i = 0; i < listaBalas.size(); i++){
-                    Bullet bala = listaBalas.get(i);
-                    if (bala == null) break;
-                    if (bala.getPosY() < 0){
-                        listaBalas.remove(i);
-                        i--;
-                        continue;
-                    }
-                    for (int j = 0; j < listEnemy.size(); j++){
+            try {
+                //CHECAR COLISION NAVE - ENEMIGO
+                
+                for(int j = 0; j < listNave.size();j++){
+                    Nave nave = listNave.get(j);
+                    if (!nave.isAlive()) continue;
+                    for(int i = 0; i < listEnemy.size();i++){
                         try{
-                            Enemy enemy = listEnemy.get(j);
-                            if (enemy == null) break;
-                            if (checkCollision(bala,enemy)){
-                                enemy.removeHP();
-                                if (enemy.getHP() <= 0){
-                                    nave.incrementScore(enemy.getScore());
-                                    listEnemy.remove(j);
-                                    j--;
-                                }
-                                listaBalas.remove(i);
+                            Enemy enemy = listEnemy.get(i);
+                            if (enemy.getPosYInt() > (WindowGame.WINDOW_HEIGHT)){
+                                listEnemy.remove(i);
+                                i--;
+                                this.listNave.removeHP();
+                                continue;
+                            }
+                            if (checkCollision(nave,enemy)){
+                                nave.removeHP();
+                                listEnemy.remove(i);
                                 i--;
                                 if (i < 0) break;
                             }
@@ -109,11 +76,49 @@ public class Collision extends Thread implements Serializable{
                         }
                     }
                 }
-            }
-            try {
-                sleep(SLEEP_TIME);
-                //Ventana.puntaje += 1;
-            } catch (InterruptedException ex) {
+                
+                //CHECAR COLISION BALA - ENEMIGO
+                for(int z = 0; z < listNave.size(); z++){
+                    Nave nave = listNave.get(z);
+                    if(!nave.isAlive()) continue;
+                    GestorBalas listaBalas = nave.getBalas();
+                    
+                    for(int i = 0; i < listaBalas.size(); i++){
+                        Bullet bala = listaBalas.get(i);
+                        if (bala == null) break;
+                        if (bala.getPosY() < 0){
+                            listaBalas.remove(i);
+                            i--;
+                            continue;
+                        }
+                        for (int j = 0; j < listEnemy.size(); j++){
+                            try{
+                                Enemy enemy = listEnemy.get(j);
+                                if (enemy == null) break;
+                                if (checkCollision(bala,enemy)){
+                                    enemy.removeHP();
+                                    if (enemy.getHP() <= 0){
+                                        nave.incrementScore(enemy.getScore());
+                                        listEnemy.remove(j);
+                                        j--;
+                                    }
+                                    listaBalas.remove(i);
+                                    i--;
+                                    if (i < 0) break;
+                                }
+                            } catch (Exception e){
+                                // empty catch block
+                            }
+                        }
+                    }
+                }
+                try {
+                    sleep(SLEEP_TIME);
+                    //Ventana.puntaje += 1;
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Collision.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (RemoteException ex) {
                 Logger.getLogger(Collision.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

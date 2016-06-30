@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -60,6 +61,8 @@ public class EnemyMoving extends Thread implements Serializable{
                 contador += SLEEP_TIME;
             } catch (InterruptedException ex) {
                 Logger.getLogger(BulletMoving.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (RemoteException ex) {
+                Logger.getLogger(EnemyMoving.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

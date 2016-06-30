@@ -6,6 +6,8 @@
 package View;
 
 
+import Controller.IGestorEnemigos;
+import Controller.IGestorNave;
 import Model.Nave;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -34,6 +36,8 @@ public class WindowGame extends javax.swing.JFrame {
     
     protected final DrawingSpace panelDibujo;
     public final GameInterface game;
+    public IGestorNave naves;
+    public IGestorEnemigos enemies;
     private final Nave nave;
     private boolean keyUp;
     private boolean keyDown;
@@ -68,7 +72,9 @@ public class WindowGame extends javax.swing.JFrame {
         this.setVisible(true);
         this.setTitle("SpaceInvader by Godievski");
         this.setFocusableWindowState(true);
-        this.game = (GameInterface)Naming.lookup("//localhost/Godie");
+        this.naves = (IGestorNave)Naming.lookup("//"+ip+":"+port+"/Naves");
+        this.enemies = (IGestorEnemigos)Naming.lookup("//"+ip+":"+port+"/Enemies");
+        this.game = (GameInterface)Naming.lookup("//"+ip+":"+port+"/Game");
         this.nave = this.game.createPlayer();
         this.panelDibujo = new DrawingSpace(this, this.game, this.nave.getID(), new Dimension(400, 600));
         this.panelDibujo.setFocusable(false);
@@ -89,7 +95,7 @@ public class WindowGame extends javax.swing.JFrame {
             this.initGame();
             while (!this.game.getState()) {
             }
-            while (this.game.getNaves().isSomeOneAlive()) {
+            while (this.naves.isSomeOneAlive()) {
                 try {
                     this.game.moverPlayer(this.nave.getID(), this.keyLeft, this.keyRight, this.keyUp, this.keyDown);
                     this.panelDibujo.repaint();
@@ -187,7 +193,7 @@ public class WindowGame extends javax.swing.JFrame {
 
         //DISPARO
         try {
-            Nave n = this.game.getNaves().get(this.nave.getID());
+            Nave n = this.naves.get(this.nave.getID());
             if (code == 32 && !n.getMousePressed() && !n.getSpecialShoot()) {
                 this.spacePressed = true;
             }
@@ -231,8 +237,7 @@ public class WindowGame extends javax.swing.JFrame {
         }
         catch (RemoteException ex) {
             Logger.getLogger(WindowGame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            
+        }   
     }//GEN-LAST:event_formKeyReleased
 
     private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentMoved

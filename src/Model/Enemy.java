@@ -8,7 +8,10 @@ package Model;
 import Controller.GestorNave;
 import View.WindowGame;
 import java.awt.Graphics;
+import java.rmi.RemoteException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -43,13 +46,17 @@ public class Enemy extends Sprite {
         return this.score;
     }
     public void mover(GestorNave naves){
-        if (idNave == -1 || naves.get(idNave).getHP()<=0)
-            idNave = naves.getRandomId();
-        
-        if (tipo == TIPO_NORMAL || naves == null)
-            this.posY += VELOCIDAD;
-        else if (tipo == TIPO_RANDOM)
-            this.specialMove(naves.get(idNave));
+        try {
+            if (idNave == -1 || naves.get(idNave).getHP()<=0)
+                idNave = naves.getRandomId();
+            
+            if (tipo == TIPO_NORMAL || naves == null)
+                this.posY += VELOCIDAD;
+            else if (tipo == TIPO_RANDOM)
+                this.specialMove(naves.get(idNave));
+        } catch (RemoteException ex) {
+            Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void setTipo(int tipo){

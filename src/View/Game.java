@@ -11,14 +11,8 @@ import Controller.GestorEnemigos;
 import Controller.GestorNave;
 import Model.Nave;
 import java.awt.Point;
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.UnknownHostException;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -34,10 +28,10 @@ public class Game extends UnicastRemoteObject implements GameInterface{
     //FLGAS
     private boolean ready;
     
-    public Game() throws java.rmi.RemoteException{
+    public Game(GestorNave naves, GestorEnemigos enemies) throws java.rmi.RemoteException{
          //SPRITES
-        this.naves = new GestorNave();
-        this.enemies = new GestorEnemigos();
+        this.naves = naves;
+        this.enemies = enemies;
          //THREADS
         this.movimientoEnemigos = new EnemyMoving(this.naves, this.enemies);
         this.controladorColisiones = new Collision(this.naves, this.enemies);
@@ -194,20 +188,5 @@ public class Game extends UnicastRemoteObject implements GameInterface{
     public void collisionStart() throws RemoteException {
         this.controladorColisiones.start();
     }
-    public static void main(String[] args) {
-        /*SERVIDOR*/
-        //System.setProperty("java.security.policy", "C:/Temp/CLIENTE1/build/classes/java.policy");
-        try {
-            Game gm = new Game();
-            Naming.rebind("Godie", gm);
-            System.out.println("Server created");
-            System.out.println(InetAddress.getLocalHost().getHostAddress());
-        }catch (RemoteException | MalformedURLException | UnknownHostException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        /**/ 
-        /**/
-    }
-
     
 }
